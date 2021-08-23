@@ -45,9 +45,7 @@ void ByteStream::pop_output(const size_t len) {
 //! \returns a string
 std::string ByteStream::read(const size_t len) {
 	string out = _stream.substr(0, len);
-	_stream.erase(0, len);
-	_buffer_size -= len;
-	_bytes_read += len;
+	pop_output(len);
 	return out;
 }
 
