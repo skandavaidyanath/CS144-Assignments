@@ -78,3 +78,5 @@ void StreamReassembler::push_substring(const string &data, const size_t index, c
 size_t StreamReassembler::unassembled_bytes() const { return _num_unasb; }
 
 bool StreamReassembler::empty() const { return _buffer.empty(); }
+
+size_t StreamReassembler::first_unasb() const { return _first_unasb; }
