@@ -20,6 +20,12 @@ class TCPConnection {
     //! for 10 * _cfg.rt_timeout milliseconds after both streams have ended,
     //! in case the remote TCPConnection doesn't know we've received its whole stream?
     bool _linger_after_streams_finish{true};
+    
+    uint64_t _time_now{0};
+    uint64_t _time_last_rec{0};
+    uint64_t _time_last_sent{0};
+    bool _active{true};
+    bool _finsent{false};
 
   public:
     //! \name "Input" interface for the writer
@@ -82,6 +88,10 @@ class TCPConnection {
 
     //! Construct a new connection from a configuration
     explicit TCPConnection(const TCPConfig &cfg) : _cfg{cfg} {}
+    
+    size_t fill_window();
+    
+    void send_RST();
 
     //! \name construction and destruction
     //! moving is allowed; copying is disallowed; default construction not possible
