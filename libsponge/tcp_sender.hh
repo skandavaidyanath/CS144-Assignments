@@ -9,6 +9,8 @@
 #include <functional>
 #include <queue>
 
+using namespace std;
+
 //! \brief The "sender" part of a TCP implementation.
 
 //! Accepts a ByteStream, divides it up into segments and sends the
@@ -28,9 +30,24 @@ class TCPSender {
 
     //! outgoing stream of bytes that have not yet been sent
     ByteStream _stream;
-
+    
     //! the (absolute) sequence number for the next byte to be sent
     uint64_t _next_seqno{0};
+    
+    uint64_t _time{0};    // total time lapsed
+    
+    uint64_t _last_ack{0};  // the last ACK number received
+    
+    bool _finsent{false};
+    bool _zerowindow{false};
+
+    // time it was sent, TCPSegment
+    vector<pair<uint64_t, TCPSegment>> _outstanding{};
+
+    unsigned int _current_rto;  
+    unsigned int _consecutive_retransmissions{0};  
+    size_t _window{1};   // the window size broadcasted by the peer
+    
 
   public:
     //! Initialize a TCPSender
